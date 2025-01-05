@@ -13,6 +13,7 @@ function J = fourierRotate(I, ang)
 
 Image = I;
 
+% decide on where rotation center is and rotate
 if mod(length(Image), 2) == 0
     Image(end+1, end+1) = 0;
     Image = imrotate(Image, ang, 'bicubic', 'crop');
@@ -20,8 +21,6 @@ if mod(length(Image), 2) == 0
 else
     Image = imrotate(Image, ang, 'bicubic', 'crop');
     J = Image;
-end
+end %if
 
-
-
-end
+end %function

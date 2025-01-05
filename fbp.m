@@ -27,7 +27,7 @@ end
 M = size(projections, 2);
 N = size(projections, 1);
 
-% in order to create the correct RamLak-filter get a pixel shift for even 
+% in order to create the correct RamLak-filter get a pixel shift for odd 
 % projection lengths 
 if mod(N, 2) == 0
     add_f = 0;
@@ -63,7 +63,7 @@ for kk = 1:numel(angs)
     backproj = repmat(projections(:,kk), 1, N);
     backproj(end, end) = 0;
     backproj = imrotate(backproj, 90+angs(kk), 'bicubic', 'crop');
-    
+
     % add backprojection to image
     Image = Image + backproj(1:N, 1:N);
 

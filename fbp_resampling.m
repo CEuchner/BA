@@ -1,5 +1,6 @@
 function Image = fbp_resampling(Sinogram, angs, useFilter, usePadding)
-% Calculating filtered backprojection with a given Sinogram ans angles
+% Calculating filtered backprojection with a given Sinogram ans angles via
+% resampling the fourier-space
 %
 %   Input Arguments
 %       Sinogram    input Sinogram as 2D-Image
@@ -22,7 +23,8 @@ end
 N = size(projections, 1);
 M = size(projections, 2);
 
-% in order to rotate around the right center pixels must be added
+% in order to create the correct RamLak-filter get a pixel shift for odd 
+% projection lengths 
 if mod(N, 2) == 0
     add_f = 0;
 else
@@ -36,17 +38,21 @@ else
     filter = ones([N 1]);
 end
 
-% define Image to be filled with backprojections
+% define Image to be filled with fourier slices
 Image = zeros(N, N);
 
+% 1D-fourier-transform the projections
+% use the filter on each fourier-transmormed projection
 projections = fftshift(fft(ifftshift(projections)));
 projections = projections .* repmat(filter, 1, M);
 
 % each loop is one step of resampling the fourier-space
 for kk = 1:numel(angs)
 
+    % define array to add transformed projection for one angle
     projection = zeros(N, N);
     
+    % put transformed projeciton into empty space and rotate it
     if add_f == 0
         projection(N/2+1, :) = projections(:, kk);
         projection = fourierRotate(projection, angs(kk));
@@ -55,7 +61,7 @@ for kk = 1:numel(angs)
         projection = imrotate(projection, angs(kk), 'bicubic', 'crop');
     end
 
-    % add backprojection to image
+    % add fourier slice to fourier-space
     Image = Image + projection;
 
 end %for

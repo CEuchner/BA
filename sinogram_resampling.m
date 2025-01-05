@@ -1,6 +1,7 @@
 function Sinogram = sinogram_resampling(Image, angs)
-%This function calculates the line integral of a matrix V over a line with
-%angle ang to the horopenizontal middle line
+% This function creates a sinogram in form of a figure from an input image
+% with an input array of angles. The sinogram is made for the filtered
+% backprojection cia resampling of the fourier-space
 %   
 %   Input Arguments
 %       Image   2D input gray scale image
