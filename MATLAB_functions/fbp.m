@@ -61,11 +61,10 @@ for kk = 1:numel(angs)
     % add pixel for it to be centered
     % and rotate it to its actual angle position
     backproj = repmat(projections(:,kk), 1, N);
-    backproj(end, end) = 0;
     backproj = imrotate(backproj, 90+angs(kk), 'bicubic', 'crop');
 
     % add backprojection to image
-    Image = Image + backproj(1:N, 1:N);
+    Image = Image + backproj;
 
 end %for
 
